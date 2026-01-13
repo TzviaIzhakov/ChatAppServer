@@ -2,6 +2,7 @@ import socket
 import threading
 
 # Server Configuration
+# TODO - write your server ip address here
 SERVER_IP = '127.0.0.1'
 SERVER_PORT = 65432
 
@@ -56,8 +57,11 @@ def handle_client_connection(sender_socket, sender_address):
                     if user_name in active_users_map:
                         recipient_socket = active_users_map[user_name]
                         try:
-                            # Construct the final message for the recipient.
-                            formatted_message = f"From {sender_name}: {message_content}"
+                            # Construct the final message for the recipient
+                            if message_content.startswith("[System]"):
+                                formatted_message = message_content
+                            else:
+                                formatted_message = f"From {sender_name}: {message_content}"
                             recipient_socket.send(formatted_message.encode('utf-8'))
                         except Exception as e:
                             print(f"[ERROR] Failed to forward message to {user_name}: {e}")
