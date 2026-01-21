@@ -1,8 +1,11 @@
 import socket
 import threading
 
+# צביה איסחקוב 322577669
+# אורטל גברילוב 214442550
+
 # Server Configuration
-# TODO - write your server ip address here
+# TODO - write your server ip address here in HOST
 SERVER_IP = '127.0.0.1'
 SERVER_PORT = 65432
 
@@ -41,10 +44,8 @@ def handle_client_connection(sender_socket, sender_address):
             raw_incoming_data = sender_socket.recv(1024).decode('utf-8')
 
             # If no data is received, the client likely disconnected.
-            #?????
             if not raw_incoming_data:
                 break
-            #?????
 
             # The protocol expects the format "user_name:message_content".
             if ":" in raw_incoming_data:
@@ -69,10 +70,8 @@ def handle_client_connection(sender_socket, sender_address):
                         # Notify the sender if the recipient is not found.
                         error_msg = f"System: User '{user_name}' is not currently online."
                         sender_socket.send(error_msg.encode('utf-8'))
-    #?????????????
     except (ConnectionResetError, BrokenPipeError):
         print(f"[LOG] Connection lost with {sender_name}")
-    #???????????
     except Exception as e:
         print(f"[ERROR] Connection issue with {sender_name if sender_name else sender_address}: {e}")
     finally:
@@ -109,15 +108,11 @@ def start_server():
                 args=(new_client_socket, client_address)
             )
             # Set as daemon so it closes when the main thread exits.
-            #????
             client_handler_thread.daemon = True
-            #?????
             client_handler_thread.start()
 
-    #??????
     except KeyboardInterrupt:
         print("\n[SYSTEM] Server shutting down manually.")
-    #??????
     except Exception as e:
         print(f"[SYSTEM] Fatal server error: {e}")
     finally:
